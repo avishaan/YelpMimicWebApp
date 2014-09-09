@@ -91,6 +91,38 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /reviews:
+    x-swagger-router-controller: reviews
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    get:
+      description: Returns a list of reviews
+      operationId: getReviews
+      produces:
+        - application/json
+      parameters:
+        - name: restID
+          in: query
+          description: Get reviews for a specific restaurant
+          required: false
+          type: number
+        - name: rating
+          in: query
+          description: Get reviews with a specific rating
+          required: false
+          type: number
+        - name: reviewer
+          in: query
+          description: Get reviews by a specific user
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema: {}
+        default:
+          description: Error
+          schema: {}
 # complex objects have schema definitions
 definitions:
   HelloWorldResponse:
