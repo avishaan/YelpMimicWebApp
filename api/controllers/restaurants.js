@@ -22,7 +22,7 @@ function getRestaurants(req, res){
 
 function getRestaurantById(req, res){
   var restId = req.swagger.params.id.value;
-  request(config.UG + '/restaurants?ql=restID=' + restID, function(err, response, body){
+  request(config.UG + '/restaurants?ql=restID=' + restId, function(err, response, body){
     if (err){
       res.send(err);
     } else {
