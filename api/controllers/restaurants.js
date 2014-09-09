@@ -22,11 +22,45 @@ function getRestaurants(req, res){
 
 function getRestaurantById(req, res){
   var restId = req.swagger.params.id.value;
-  request(config.UG + '/restaurants?ql=restID=' + restId, function(err, response, body){
-    if (err){
-      res.send(err);
-    } else {
-      res.send(body);
-    }
+  async.parallel({
+    restaurant: function(cb){
+      request(config.UG + '/restaurants?ql=restID=' + restId, function(err, response, body){
+        if (err){
+          res.send(err);
+        } else {
+          var result = JSON.parse(body);
+          cb(null, result);
+        }
+      });
+    },
+    reviews: function(cb){
+      async.waterfall([
+        function(callback){
+        request(config.UG + "/reviews/?ql=restID=" + restId, function(err, response, body){
+          if (err) {
+            res.send(err);
+          } else {
+            var data = JSON.parse(body);
+            callback(null, data);
+          }
+        });
+      },
+      function(data, callback){
+        var l = data.entities.length;
+        var aggregate = 0;
+        var i;
+        for (i = 0; i < l; i++){
+          aggregate += data.entities[i].rating;
+        }
+        aggregate = {
+          aggregate : +(aggregate/i).toFixed(2)
+        };
+        callback(null, data, aggregate);
+      }
+      ], cb);
+    }},
+    function(err, results){
+      res.send(results);
+    
   });
 }
