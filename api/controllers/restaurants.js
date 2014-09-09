@@ -56,11 +56,10 @@ function getRestaurantById(req, res){
           aggregate : +(aggregate/i).toFixed(2)
         };
         callback(null, data, aggregate);
-      }
-      ], cb);
-    }},
-    function(err, results){
-      res.send(results);
-    
+      }], cb);
+    }
+  },
+  function(err, results){
+    res.send(results);
   });
 }
