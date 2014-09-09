@@ -1,7 +1,7 @@
 swagger: 2.0
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: Eats
 # during dev, should point to your local machine
 host: localhost
 # basePath prefixes all resource paths 
@@ -19,6 +19,32 @@ produces:
   - application/json
 x-volos-resources: {}
 paths:
+  /hello:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: hello_world
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    get:
+      description: Returns 'Hello' to the caller
+      # used as the method name of the controller
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
   /hello:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
