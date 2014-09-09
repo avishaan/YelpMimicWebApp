@@ -45,23 +45,43 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-  /hello:
+  /restaurants:
     # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+    x-swagger-router-controller: restaurants
     x-volos-authorizations: {}
     x-volos-apply: {}
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns all the restaurants
       # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      operationId: getRestaurants
       responses:
-        "200":
+        "201":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /restaurants/{id}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: restaurants
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    get:
+      description: returns single restaurants by its restId
+      # used as the method name of the controller
+      operationId: getRestaurantById
+      parameters:
+        - name: id
+          in: path
+          description: The restaurant id (restId) key of the record
+          required: true
+          type: int
+      responses:
+        "201":
           description: Success
           schema:
             # a pointer to a definition
