@@ -1,65 +1,67 @@
-'use strict'
+// request = require('request');
+async = require('async');
+// // express = require('express');
+// // app = express();
+// // app.use(express.bodyParser());
 
-var request = require('request');
-var async = require('async');
-
-var config = require('../../config/config.js');
+var config = require('../../config');
 
 module.exports = {
-  getRestaurants: getRestaurants,
-  getRestaurantById: getRestaurantById
+    getRestaurants: getRestaurants,
+    getRestaurantByID: getRestaurantByID
 };
 
-function getRestaurants(req, res){
-  request(config.UG + '/restaurants', function(err, response, body){
-    if (err){
-      res.send(err);
-    } else {
-      res.send(body);
-    }
-  });
+function getRestaurants(req, res) {
+    request(config.UG + '/restaurants', function(error, response, body) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send(body);
+        }
+    });
 }
 
-function getRestaurantById(req, res){
-  var restId = req.swagger.params.id.value;
-  async.parallel({
-    restaurant: function(cb){
-      request(config.UG + '/restaurants?ql=restID=' + restId, function(err, response, body){
-        if (err){
-          res.send(err);
-        } else {
-          var result = JSON.parse(body);
-          cb(null, result);
-        }
-      });
-    },
-    reviews: function(cb){
-      async.waterfall([
-        function(callback){
-        request(config.UG + "/reviews/?ql=restID=" + restId, function(err, response, body){
-          if (err) {
-            res.send(err);
-          } else {
-            var data = JSON.parse(body);
-            callback(null, data);
-          }
+function getRestaurantByID(req, res) {
+    var restID = req.swagger.params.id.value;
+    async.parallel({
+            restaurant: function(callback) {
+                request(config.UG + "/restaurants/?ql=restID=" + restID, function(error, response, body) {
+                    if (error) {
+                        res.send(error);
+                    } else {
+                        var result = JSON.parse(body);
+                        callback(null, result);
+                    }
+                });
+            },
+            reviews: function(callback) {
+                async.waterfall([
+                    function(callback) {
+                        request(config.UG + "/reviews/?ql=restID=" + restID, function(error, response, body) {
+                            if (error) {
+                                res.send(error);
+                            } else {
+                                data = JSON.parse(body);
+                                callback(null, data);
+                            }
+                        });
+                    },
+                    function(data, callback) {
+                        var l = data.entities.length;
+                        var aggregate = 0;
+                        var i;
+                        for (i = 0; i < l; i++) {
+                            aggregate += data.entities[i].rating;
+                        }
+                        aggregate = {
+                            aggregate: +(aggregate / i).toFixed(2)
+                        };
+                        callback(null, data, aggregate);
+                    }
+                ], callback);
+            }
+        },
+        function(err, results) {
+            res.send(results);
         });
-      },
-      function(data, callback){
-        var l = data.entities.length;
-        var aggregate = 0;
-        var i;
-        for (i = 0; i < l; i++){
-          aggregate += data.entities[i].rating;
-        }
-        aggregate = {
-          aggregate : +(aggregate/i).toFixed(2)
-        };
-        callback(null, data, aggregate);
-      }], cb);
-    }
-  },
-  function(err, results){
-    res.send(results);
-  });
 }

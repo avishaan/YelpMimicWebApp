@@ -1,5 +1,5 @@
 {
-  "name": "workshop",
+  "name": "api-workshop",
   "version": "0.0.1",
   "private": "true",
   "description": "My new Apigee 127 Project",
@@ -8,21 +8,19 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
-    "express": "3.x.x",
+    "express": "3.7.x",
     "a127-magic": "",
-    "volos-analytics-apigee": "",
-    "volos-analytics-common": "",
-    "volos-analytics-memory": "",
     "volos-cache-apigee": "",
     "volos-cache-memory": "",
     "volos-cache-redis": "",
+    "volos-oauth-apigee": "",
+    "volos-oauth-redis": "",
     "volos-quota-apigee": "",
     "volos-quota-memory": "",
     "volos-quota-redis": "",
-    "volos-oauth-redis": "",
-    "volos-oauth-apigee": "",
-    "request": "^2.42.0",
-    "async": "^0.9.0"
+    "volos-management-apigee": "",
+    "jade": "",
+    "underscore": ""
   },
   "devDependencies": {
     "should": "3.1.x"
@@ -31,12 +29,12 @@
     "start": "node app.js"
   },
   "api": {
-    "name": "workshop",
-    "basePath": "/workshop",
+    "name": "api-workshop",
+    "basePath": "/api-workshop",
     "docsPath": "/docs",
     "main": "app.js"
   },
   "dist": {
-    "shasum": "197182ee376d5f5c41eae1ef49f973604f108c90"
+    "shasum": "152d9975a827be9182cd007043583468187b12cb"
   }
 }
