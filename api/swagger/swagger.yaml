@@ -123,6 +123,26 @@ paths:
         default:
           description: Error
           schema: {}
+    post:
+      x-volos-apply: {}
+      description: Posts a new review
+      operationId: postReview
+      parameters:
+        - name: body
+          in: body
+          description: Post review and rating
+          required: false
+          schema: 
+            $ref: "#/definitions/Review"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Success
+          schema: {}
+        default:
+          description: Error
+          schema: {}
 # complex objects have schema definitions
 definitions:
   HelloWorldResponse:
