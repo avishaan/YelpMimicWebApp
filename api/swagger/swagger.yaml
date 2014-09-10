@@ -79,7 +79,7 @@ paths:
           in: path
           description: The restaurant id (restId) key of the record
           required: true
-          type: int
+          type: integer
       responses:
         "201":
           description: Success
@@ -145,6 +145,18 @@ paths:
           schema: {}
 # complex objects have schema definitions
 definitions:
+  Review:
+    properties:
+      title:
+        type: string
+      restID:
+        type: integer
+      rating:
+        type: integer
+      reviewer:
+        type: string
+      body:
+        type: string
   HelloWorldResponse:
     required:
       - message
