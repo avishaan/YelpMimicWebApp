@@ -1,3 +1,12 @@
+'use strict'
+
+var request = require('request');
+
+var config = require('../../config/config.js');
+
+module.exports = {
+  getReviews: getReviews,
+};
 function getReviews (req, res) {
 	var qs = "";
 	if (req.swagger.params.restID.value) {
