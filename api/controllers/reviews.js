@@ -1,4 +1,4 @@
-// request = require('request');
+request = require('request');
 var config = require('../../config/config.js');
 
 module.exports = {
@@ -35,6 +35,6 @@ function postReview (req, res) {
       res.send(error);
     } else {
       res.send(body);
-    }      
+    }
   });
 }
